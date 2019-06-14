@@ -24,7 +24,7 @@ ShowFiles(){
 		while ((i++)); read song ;
 		do
 			menuitems+=( "$song" $i )
-		done < <(find $HOME -iname "*.mp3" -print | grep $1)
+		done < <(find $HOME -iname "*.mp3" -print | grep -i $1)
 	fi
 	dialog --menu  "Make your own choice" 13 70 6 "${menuitems[@]}" 2>.tempfile
 	output=`cat .tempfile`
@@ -92,11 +92,16 @@ MainMenu(){
 				5 "Genre" 2>.tempfile
 			tag=`cat .tempfile`
 			case $tag in
-				1 ) tagname="title";;
-				2 ) tagname="artist";;
-				3 ) tagname="album";;
-				4 ) tagname="year";;
-				5 ) tagname="genre";;
+				1 ) tagname="title"
+				    prefix="s";;
+				2 ) tagname="artist"
+				    prefix="a";;
+				3 ) tagname="album"
+				    prefix="A";;
+				4 ) tagname="year"
+				    prefix="y";;
+				5 ) tagname="genre"
+				    prefix="g";;
 			esac
 			dialog --backtitle "MP3Manager" \
 				--title "Edit $tagname" \
@@ -105,6 +110,7 @@ MainMenu(){
 			echo $output
 			echo $tag
 			echo $value
+			id3tag -"$prefix""$value" "$output"
 		fi
 		MainMenu
 	elif [ "$output" = "4" ]; then
