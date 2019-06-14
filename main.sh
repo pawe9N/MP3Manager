@@ -43,7 +43,7 @@ MainMenu(){
 		4 "Show and edit file tags" \
 		5 "Download MP3 file from youtube (by video id)" \
 		6 "Move MP3 files to Music directory" \
-		7 "Exit" 2>.tempfile
+		6 "Exit" 2>.tempfile
 	output=`cat .tempfile`
 	echo $output
 	rm -f .tempfile
