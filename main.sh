@@ -205,12 +205,12 @@ MainMenu(){
 			--inputbox "Enter video id" 8 80 3>&1 1>&2 2>&3 3>&-)
 
 		# if user entered video id
-		if [ "$!" -eq "0" ]; then
+		if [ "$?" -eq "0" ]; then
 			clear
 			# setting url for specified video to download as mp3 file
 			url="https://www.youtube.com/watch?v=$video_id"
 			# download video as mp3 file and wait for end
-			youtube-dl -x --audio-format mp3 "$url"
+			youtube-dl -x --audio-format mp3 -o '%(title)s.%(ext)s' "$url"
 			pid=$!
 			wait pid
 		fi
@@ -230,14 +230,14 @@ MainMenu(){
 		# select title from menu
 		dialog --menu  "Choose file to download" 20 80 10 "${menuitems[@]}" 2>.tempfile
 		# if user selected title then download it and wait for end
-		if [ "$!" -eq "0" ]; then
+		if [ "$?" -eq "0" ]; then
 			selected_id=`cat .tempfile`
 			m -f .tempfile
 			selected_id=`expr $selected_id - 1`
 			selected_video_id="${valueitems[$selected_id]}"
 			clear
 			url="https://www.youtube.com/watch?v=$selected_video_id"
-			youtube-dl -x --audio-format mp3 "$url"
+			youtube-dl -x --audio-format mp3 -o '%(title)s.%(ext)s' "$url"
 			pid=$	
 			wait pid
 		fi
@@ -245,16 +245,18 @@ MainMenu(){
 	
 	# selected option for moving all mp3 files to Music folder in user home directory
 	elif [ "$output" = "7" ]; then
-		find $HOME -iname "*.mp3" -type f -exec /bin/mv -n {} $HOME/Music \;
+		find $HOME -iname "*.mp3" -type f -exec /bin/mv -n --force {} $HOME/Music 2>/dev/null \; 
 		MainMenu
 
 	# selected exit option
 	elif [ "$output" = "8" ]; then
 		clear
+		exit 0
 
 	# clicked cancel button
 	else 
 		clear
+		exit 0
 	fi
 }
 MainMenu
