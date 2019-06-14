@@ -65,7 +65,6 @@ MainMenu(){
 		MainMenu
 	elif [ "$output" = "3" ]; then
 		ShowFiles
-		echo "A"
 		t=0
 		tagitems=""
 		while ((t++)); read filetag ;
