@@ -7,7 +7,7 @@ do
 		h ) echo "To play song select 'Play song' option"
 		    echo "To play song with specific filename select 'Play song (search by filename)'"
 		    echo "To see and edit MP3 tags select 'Show and edit file tags' option"
-		    echo "To download new MP3 files select 'Download MP3 files' option"
+		    echo "To download new MP3 file select 'Download MP3 file from youtube' option"
 		    echo "To quit the program select 'Exit' option";;
     esac
     exit 0
@@ -39,9 +39,10 @@ MainMenu(){
 		--menu "Make your choice" 13 60 6 \
 		1 "Play song" \
 		2 "Play song (search by filename)" \
-		3 "Show and edit file tags" \
-		4 "Download MP3 files" \
-		5 "Exit" 2>.tempfile
+		3 "Play song (search by artist tag)" \
+		4 "Show and edit file tags" \
+		5 "Download MP3 file from youtube (by video id)" \
+		6 "Exit" 2>.tempfile
 	output=`cat .tempfile`
 	echo $output
 	rm -f .tempfile
@@ -64,6 +65,30 @@ MainMenu(){
 		wait pid
 		MainMenu
 	elif [ "$output" = "3" ]; then
+		dialog --backtitle "MP3Manager" \
+		       	--title "Search by artist" \
+			--inputbox "Enter artist name" 8 60 2>.tempfile
+		artist=$?
+		if [ "$artist" -eq "0" ]; then
+			artist=`cat .tempfile`
+			f=0
+			files=()
+			while ((f++)); read file ;
+			do
+				if [[ $(id3info "$file" | grep "TPE1" | awk '{$1="";$2="";$3="";$4="";print}' | sed -e 's/^[ \t]*//' | grep $artist) ]]; then
+					files+=( "$file" $f )
+				fi
+			done < <(find $HOME -iname "*.mp3" -print)
+			dialog --menu  "Make your own choice" 13 70 6 "${files[@]}" 2>.tempfile
+			output=`cat .tempfile`
+			rm -f .tempfile
+			clear
+			mpg123 "$output"
+			pid=$!
+			wait pid
+		fi
+		MainMenu	
+	elif [ "$output" = "4" ]; then
 		ShowFiles
 		t=0
 		tagitems=""
@@ -113,9 +138,18 @@ MainMenu(){
 			id3tag -"$prefix""$value" "$output"
 		fi
 		MainMenu
-	elif [ "$output" = "4" ]; then
-		clear
 	elif [ "$output" = "5" ]; then
+		video_id=$(dialog --backtitle "MP3Manager" \
+			--title "Download MP3 file from youtube" \
+			--inputbox "Enter video id" 8 60 3>&1 1>&2 2>&3 3>&-)
+		clear
+		url="https://www.youtube.com/watch?v=$video_id"
+		echo $url
+		youtube-dl -x --audio-format mp3 "$url"
+		pid=$!
+		wait pid
+		MainMenu
+	elif [ "$output" = "6" ]; then
 		clear
 	else 
 		clear
