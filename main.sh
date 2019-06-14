@@ -65,10 +65,54 @@ MainMenu(){
 		MainMenu
 	elif [ "$output" = "3" ]; then
 		ShowFiles
+		echo "A"
+		t=0
+		tagitems=""
+		while ((t++)); read filetag ;
+		do
+			tagitems+="$filetag \n"
+		done < <(id3info "$output" | grep "===" | awk '{$1="";$2="";print}' | sed -e 's/^[ \t]*//')
+		
+		if [ -z "$tagitems" ]; then
+			tagitems="There are no tags"
+		fi
+
+		dialog --backtitle "MP3Manager" \
+		       --title "Do you want to edit this file's tags?" \
+	       	       --yesno "$tagitems" 7 60
+		toedit=$?
+
+		if [ "$toedit" -eq 0 ]; then
+			dialog --backtitle "MP3Manager" \
+				--title "Select tag to change" \
+				--menu "Make your choice" 13 60 6 \
+				1 "Title" \
+				2 "Artist" \
+				3 "Album" \
+				4 "Year" \
+				5 "Genre" 2>.tempfile
+			tag=`cat .tempfile`
+			case $tag in
+				1 ) tagname="title";;
+				2 ) tagname="artist";;
+				3 ) tagname="album";;
+				4 ) tagname="year";;
+				5 ) tagname="genre";;
+			esac
+			dialog --backtitle "MP3Manager" \
+				--title "Edit $tagname" \
+				--inputbox "Enter new $tagname" 8 60 2>.tempfile
+			value=`cat .tempfile`
+			echo $output
+			echo $tag
+			echo $value
+		fi
 		MainMenu
 	elif [ "$output" = "4" ]; then
 		clear
 	elif [ "$output" = "5" ]; then
+		clear
+	else 
 		clear
 	fi
 }
