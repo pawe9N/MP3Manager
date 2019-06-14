@@ -1,0 +1,16 @@
+.TH man 8 "14.06.2019" "1.0" "MP3Manager man page"
+.SH NAME
+MP3Manager \- manages your MP3 files
+.SH SYNOPIS
+./main.sh
+.SH DESCRIPTION
+MP3Manager is a high level shell program for manages MP3 files.
+.SH OPTIONS
+\-v \- current version
+\-h \- help
+.SH SEE ALSO
+...
+.SH BUGS
+No known bugs
+.SH AUTOR
+Paweł Nadachowski
