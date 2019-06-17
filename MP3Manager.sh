@@ -17,7 +17,7 @@ do
 		    echo "To move all your MP3 files to Music folder in user home directory select 'Move MP3 files to Music directory' option"
 		    echo "To quit the program select 'Exit' option";;
 		# manual
-		m ) man ./MP3Manager;;
+		m ) man ./MP3Manager.man;;
     esac
     exit 0
 done

@@ -1,0 +1,66 @@
+.TH "MP3Manager" "1.0.0" "MP3Manager manual"
+.SH NAME
+MP3Manager \- script that manages mp3 files.
+.SH HOW TO USE
+MP3Manager.sh [\-vhm]
+.SH DESCRIPTION
+MP3Manager \- script with semigraphic interface for managing mp3 files. It allows you to search, display, play, edit and download mp3 files.
+.SH OPTIONS
+.TP 8
+.BR -v
+\- The current version of the script
+.TP
+.BR -h
+\- Help
+.TP
+.BR -m
+\- Manual
+.SH USER INTERFACE
+The script interface is created using the dialog package. It allows you to display semigraphic controls to facilitate the use of script functionality. Immediately after launching the script, a window opens with the main menu allowing the user to select a specific option from the list.
+.SH MAIN MENU
+One of the following options can be selected in the menu:
+.SS "1. Play song"
+It allows you to select one of the mp3 files in the user's home directory. When selected, the song is played back.
+.SS "2. Play song (search by filename)"
+Exactly the same as at the first position, but here we can additionally filter after the file name.
+.SS "3. Play song (search by artist tag)"
+It allows you to filter mp3 files after the tag named artist. When selected, the song is played back.
+.SS "4. Show and edit file tags"
+When selected, displays a menu with a list of mp3 files in the user's home directory. After selecting the item, the user is redirected to the card with the information about the file tags displayed and the option to change the tags. After selecting this option, the next menu is shown, this time with the list of tags to be changed. You can choose from the following items:
+.TP
+.BR "1. Title"
+\- means the title of the song
+.TP
+.BR "2. Artist"
+\- means the performer of the song
+.TP
+.BR "3. Album"
+\- means the album on which the song was recorded
+.TP
+.BR "4. Year"
+\- year of creation
+.TP
+.BR "5. Genre"
+\- music genre of the song (only SHORT value can be entered here)
+.SS "5. Download MP3 file from youtube (by video id)"
+Selecting this option will bring up a field in which you need to enter the video id from the youtube site. After entering, the song we are looking for is downloaded and followed by the mp3 extension.
+.SS "6. Download MP3 file from youtube (by video id from file)"
+This option allows you to select the downloaded file using the YouTube video identifiers already defined in the videoToDownload.txt file. You no longer need to rewrite a difficult to remember hash. It is enough that this identifier will be in the file, then you can download the file using the interface and selecting the song you are interested in after the song name.
+.SS "7. Move MP3 files to Music directory"
+Selecting this option will transfer all user mp3 files to the Music folder in the user's home directory.
+.SS "8. Exit"
+Exit from the program
+.SH USED ​​LIBRARIES / PACKAGES
+The following libraries / packages were used in the script:
+.SS "dialog"
+In the script, it is used to show semigraphic interface elements
+.SS "mpg123"
+Plays mp3 files
+.SS "id3lib"
+Library for displaying and editing id3 tags for mp3 files
+.SS "youtube-dl"
+It is useful when downloading mp3 files from the youtube site.
+.SH KNOWN BUGS
+No bugs
+.SH AUTHOR
+Paweł Nadachowski
