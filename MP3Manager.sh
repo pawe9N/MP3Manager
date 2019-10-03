@@ -258,7 +258,7 @@ MainMenu(){
 			selected_id=`cat .tempfile`
 			rm -f .tempfile
 			selected_id=`expr $selected_id - 1`
-			selected_video_id="${valueitems[$selected_id]}"
+			selected_video_id="${value_items[$selected_id]}"
 			clear
 			url="https://www.youtube.com/watch?v=$selected_video_id"
 			youtube-dl -x --audio-format mp3 -o '%(title)s.%(ext)s' "$url"
